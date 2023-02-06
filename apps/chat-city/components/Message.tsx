@@ -1,6 +1,7 @@
 export type MessageType = {
   userName: string;
   content: string;
+  sendDate: string;
 };
 
 type Props = {

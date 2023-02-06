@@ -5,12 +5,6 @@ import { ConnectedIcon, MessageBox } from '../components/ConnectedIcon';
 import { MessageType, Message } from '../components/Message';
 
 export function Index() {
-  /*
-   * Replace the elements below with your own.
-   *
-   * Note: The corresponding styles are in the ./index.css file.
-   */
-
   const [currentSocket, setCurrentSocket] = useState<Socket>(null);
   const [isConnected, setIsConnected] = useState(false);
   const [userName, setUserName] = useState<string>(undefined);
@@ -30,9 +24,21 @@ export function Index() {
       setIsConnected(false);
     });
 
-    socket.on('message', (fromServer) => {
-      setMessages((m) => [...m, fromServer]);
-    });
+    socket.on(
+      'message',
+      async (fromServer: { id: string; sendDate: string }) => {
+        console.log(`http://localhost:3333/message/${fromServer.id}`);
+        const response = await fetch(
+          `http://localhost:3333/message/${fromServer.id}`
+        );
+
+        const msg: MessageType = await response.json();
+
+        setMessages((m) =>
+          [...m, msg].sort((a, b) => a.sendDate.localeCompare(b.sendDate))
+        );
+      }
+    );
 
     return () => {
       socket.off('connect');
@@ -45,6 +51,7 @@ export function Index() {
     const message = {
       userName,
       content: msg,
+      sendDate: new Date(),
     };
 
     currentSocket.emit('message', message);
