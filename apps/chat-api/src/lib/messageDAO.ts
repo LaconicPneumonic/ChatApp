@@ -11,7 +11,7 @@ export type Message = {
 
 type MessageId = string;
 
-interface MessageInterface {
+export interface MessageInterface {
   writeMessage(msg: Message): Promise<MessageId>;
   getMessage(id: MessageId): Promise<Message>;
   getMessagesBefore(
@@ -30,13 +30,19 @@ interface MessageInterface {
 export class MessageDAO implements MessageInterface {
   messageCollection: Collection<Message>;
   client: MongoClient;
-  constructor() {
+  constructor(logger: (...args: Array<unknown>) => void) {
     this.client = new MongoClient(connString);
     this.messageCollection = this.client
       .db('chat')
       .collection<Message>('messages');
+
+    // add logging statements
+    this.client.on('commandStarted', logger);
+    this.client.on('commandSucceeded', logger);
+    this.client.on('commandFailed', logger);
   }
-  async writeMessage(msg: Omit<Message, '_id'>): Promise<string> {
+
+  async writeMessage(msg: Message): Promise<string> {
     const ret = await this.messageCollection.insertOne(msg);
     return ret.insertedId.toHexString();
   }
@@ -68,29 +74,3 @@ export class MessageDAO implements MessageInterface {
     return this.client.close();
   }
 }
-
-// const run = async (): Promise<void> => {
-//   const client = new MessageDAO();
-
-//   try {
-//     const messages = Array.from({ length: 100 }).map((_, i) =>
-//       client.writeMessage({
-//         sentBy: 'me',
-//         content: `SENT THIS JAWN AT ${i}`,
-//         sendDate: new Date(),
-//       })
-//     );
-
-//     const ids = await Promise.all(messages);
-
-//     console.log(ids);
-
-//     console.log(await client.getMessagesBefore());
-//   } finally {
-//     // Ensures that the client will close when you finish/error
-
-//     await client.close();
-//   }
-// };
-
-// run().catch(console.dir);

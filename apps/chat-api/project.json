@@ -13,7 +13,6 @@
         "outputPath": "dist/apps/chat-api",
         "main": "apps/chat-api/src/main.ts",
         "tsConfig": "apps/chat-api/tsconfig.app.json",
-        "assets": ["apps/chat-api/src/assets"],
         "webpackConfig": "apps/chat-api/webpack.config.js"
       },
       "configurations": {

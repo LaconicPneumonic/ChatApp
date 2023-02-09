@@ -1,18 +1,15 @@
-/**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
- */
-
 import cors from 'cors';
 import express from 'express';
-import * as path from 'path';
+import pino from 'pino';
+import pinoExpress from 'pino-http';
 import { Server } from 'socket.io';
 
 import { Message, MessageDAO } from './lib/messageDAO';
-
-const client = new MessageDAO();
+import { mongoClient } from './middleware';
 
 const app = express();
+const logger = pino();
+const client = new MessageDAO(logger.info);
 
 app.use(
   cors({
@@ -21,17 +18,17 @@ app.use(
   })
 );
 
-app.use('/assets', express.static(path.join(__dirname, 'assets')));
+app.use(pinoExpress());
+app.use(mongoClient);
 
 app.get('/message/:messageId', async (req, res) => {
-  const result = await client.getMessage(req.params.messageId);
-
+  const result = await req.getMessageDao().getMessage(req.params.messageId);
   res.send(result);
 });
 
 const port = process.env.PORT || 3333;
 const server = app.listen(port, () => {
-  console.log(`Listening at http://localhost:${port}/api`);
+  console.log(`Listening at http://localhost:${port}`);
 });
 
 const io = new Server(server, {
