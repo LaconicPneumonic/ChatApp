@@ -27,15 +27,17 @@ export function Index() {
     socket.on(
       'message',
       async (fromServer: { id: string; sendDate: string }) => {
-        console.log(`http://localhost:3333/message/${fromServer.id}`);
         const response = await fetch(
           `http://localhost:3333/message/${fromServer.id}`
         );
 
         const msg: MessageType = await response.json();
 
+        // inefficient
         setMessages((m) =>
-          [...m, msg].sort((a, b) => a.sendDate.localeCompare(b.sendDate))
+          [...m, { id: fromServer.id, ...msg }]
+            .filter((v, i, a) => a.findIndex((p) => p.id == v.id) == i)
+            .sort((a, b) => a.sendDate.localeCompare(b.sendDate))
         );
       }
     );
@@ -58,15 +60,15 @@ export function Index() {
   };
 
   return (
-    <div className="flex min-h-screen w-auto flex-col">
+    <div className="flex min-h-screen max-h-screen w-auto flex-col">
       <div className="h-100 flex w-full flex-grow flex-row overflow-hidden">
         <aside className="w-0 flex-shrink bg-cyan-700 sm:w-auto">
           <div className="flex content-start justify-between divide-slate-700 overflow-hidden border-solid sm:flex-col sm:divide-y-2">
             <div className="flex flex-row gap-3 p-2 font-bold text-white">
               <svg
                 className="h-6 w-6 flex-none fill-slate-600 stroke-2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <circle cx="12" cy="12" r="11" />
               </svg>
@@ -76,8 +78,8 @@ export function Index() {
             <div className="flex flex-row gap-3 p-2 font-bold text-white">
               <svg
                 className="h-6 w-6 flex-none fill-slate-600 stroke-2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <circle cx="12" cy="12" r="11" />
               </svg>
@@ -87,8 +89,8 @@ export function Index() {
             <div className="flex flex-row gap-3 p-2 text-white">
               <svg
                 className="h-6 w-6 flex-none fill-slate-600 stroke-2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <circle cx="12" cy="12" r="11" />
               </svg>
@@ -98,8 +100,8 @@ export function Index() {
             <div className="flex flex-row gap-3 p-2 text-white">
               <svg
                 className="h-6 w-6 flex-none fill-slate-600 stroke-2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 <circle cx="12" cy="12" r="11" />
               </svg>
@@ -110,7 +112,7 @@ export function Index() {
         </aside>
         <main
           role="main"
-          className="grid  grid-cols-1 place-content-end gap-2 overflow-y-scroll bg-cyan-100 p-4 px-3 flex-grow"
+          className="grid grid-cols-1 place-content-end gap-2  bg-cyan-100 p-4 px-3 flex-grow"
         >
           {messages.map((msg, i) => {
             return (
@@ -131,10 +133,7 @@ export function Index() {
         </span>
 
         <span className="flex-grow">
-          <MessageBox
-            disabled={userName == undefined}
-            sendMessage={sendMessage}
-          />
+          <MessageBox disabled={userName == null} sendMessage={sendMessage} />
         </span>
       </footer>
     </div>

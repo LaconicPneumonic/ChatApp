@@ -1,4 +1,5 @@
 export type MessageType = {
+  id: string;
   userName: string;
   content: string;
   sendDate: string;
@@ -23,8 +24,8 @@ export const Message = ({ mine, message }: Props) => {
     >
       <svg
         className="h-6 w-6 flex-none fill-slate-600 stroke-2"
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        strokeLinecap="round"
+        strokeLinejoin="round"
       >
         <circle cx="12" cy="12" r="11" />
       </svg>

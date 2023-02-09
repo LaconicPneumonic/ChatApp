@@ -5,7 +5,7 @@ type Props = {
   setUserName: (name: string) => void;
 };
 export const UserNameForm = ({ userNameSet, setUserName }: Props) => {
-  const [name, setName] = useState<string>(undefined);
+  const [name, setName] = useState<string>(null);
 
   const icon = (
     <svg
@@ -32,7 +32,7 @@ export const UserNameForm = ({ userNameSet, setUserName }: Props) => {
             className="text-black"
             type="text"
             placeholder="FILL OUT USERNAME"
-            value={name}
+            value={name || ''}
             onChange={(e) => setName(e.target.value)}
           />
         </label>
@@ -44,7 +44,7 @@ export const UserNameForm = ({ userNameSet, setUserName }: Props) => {
     <span>
       <button
         className="text-black  bg-white rounded-md p-2 flex gap-2"
-        onClick={() => setUserName(undefined)}
+        onClick={() => setUserName(null)}
       >
         <span>{icon}</span>
         <b>{name}</b>
