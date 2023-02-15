@@ -10,6 +10,7 @@ export const MessageBox = ({ disabled, sendMessage }: Props) => {
   const formHandler = (e) => {
     console.log(msg);
     sendMessage(msg);
+    setMsg(null);
     e.preventDefault();
   };
 

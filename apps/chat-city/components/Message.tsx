@@ -18,7 +18,7 @@ export const Message = ({ mine, message }: Props) => {
   return (
     <div
       className={[
-        'my-1 flex items-center gap-2 rounded-full px-4 py-1 font-bold',
+        'my-1 flex items-center gap-2 rounded-lg px-4 py-1 font-bold shadow-md',
         classAdditions,
       ].join(' ')}
     >

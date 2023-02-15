@@ -60,65 +60,27 @@ export function Index() {
   };
 
   return (
-    <div className="flex min-h-screen max-h-screen w-auto flex-col">
-      <div className="h-100 flex w-full flex-grow flex-row overflow-hidden">
+    <div className="h-screen w-screen flex flex-col">
+      <div className="h-full w-full flex flex-grow flex-row overflow-hidden">
         <aside className="w-0 flex-shrink bg-cyan-700 sm:w-auto">
-          <div className="flex content-start justify-between divide-slate-700 overflow-hidden border-solid sm:flex-col sm:divide-y-2">
-            <div className="flex flex-row gap-3 p-2 font-bold text-white">
-              <svg
-                className="h-6 w-6 flex-none fill-slate-600 stroke-2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <circle cx="12" cy="12" r="11" />
-              </svg>
-
-              <p className="w-0 whitespace-nowrap sm:w-auto">Ye Old Chat</p>
-            </div>
-            <div className="flex flex-row gap-3 p-2 font-bold text-white">
-              <svg
-                className="h-6 w-6 flex-none fill-slate-600 stroke-2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <circle cx="12" cy="12" r="11" />
-              </svg>
-
-              <p className="w-0 whitespace-nowrap sm:w-auto">Yonatan</p>
-            </div>
-            <div className="flex flex-row gap-3 p-2 text-white">
-              <svg
-                className="h-6 w-6 flex-none fill-slate-600 stroke-2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <circle cx="12" cy="12" r="11" />
-              </svg>
-
-              <p className="w-0 whitespace-nowrap sm:w-auto">Jake</p>
-            </div>
-            <div className="flex flex-row gap-3 p-2 text-white">
-              <svg
-                className="h-6 w-6 flex-none fill-slate-600 stroke-2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <circle cx="12" cy="12" r="11" />
-              </svg>
-
-              <p className="w-0 whitespace-nowrap sm:w-auto">John Smith</p>
+          <div className="flex content-start justify-between divide-slate-700 border-solid sm:flex-col sm:divide-y-2">
+            <div className="flex flex-row gap-3 p-3 font-bold text-white">
+              <p className="w-0 whitespace-nowrap sm:w-auto">THEE GROUPCHAT</p>
             </div>
           </div>
         </aside>
-        <main
-          role="main"
-          className="grid grid-cols-1 place-content-end gap-2  bg-cyan-100 p-4 px-3 flex-grow"
-        >
-          {messages.map((msg, i) => {
-            return (
-              <Message key={i} mine={msg.userName == userName} message={msg} />
-            );
-          })}
+        <main className="h-full w-full p-4 px-3 overflow-auto bg-cyan-100">
+          <div className="grid grid-cols-1 place-content-end gap-2">
+            {messages.map((msg, i) => {
+              return (
+                <Message
+                  key={i}
+                  mine={msg.userName == userName}
+                  message={msg}
+                />
+              );
+            })}
+          </div>
         </main>
       </div>
       <footer className="mt-auto bg-slate-600 flex flex-row p-2 gap-4 place-items-center border-separate">
