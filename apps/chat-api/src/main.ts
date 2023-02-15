@@ -11,9 +11,11 @@ const app = express();
 const logger = pino();
 const client = new MessageDAO(logger.info);
 
+const WEBSITE_URL = process.env.WEBSITE_URL || 'http://localhost:4200';
+
 app.use(
   cors({
-    origin: 'http://localhost:4200',
+    origin: WEBSITE_URL,
     methods: ['GET', 'POST'],
   })
 );
@@ -33,7 +35,7 @@ const server = app.listen(port, () => {
 
 const io = new Server(server, {
   cors: {
-    origin: 'http://localhost:4200',
+    origin: WEBSITE_URL,
     methods: ['GET', 'POST'],
   },
 });

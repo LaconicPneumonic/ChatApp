@@ -4,6 +4,8 @@ import { UserNameForm } from '../components/UserNameForm';
 import { ConnectedIcon, MessageBox } from '../components/ConnectedIcon';
 import { MessageType, Message } from '../components/Message';
 
+const SERVER_URL = process.env.SERVER_URL || 'http://localhost:3333/';
+
 export function Index() {
   const [currentSocket, setCurrentSocket] = useState<Socket>(null);
   const [isConnected, setIsConnected] = useState(false);
@@ -12,7 +14,7 @@ export function Index() {
   const [messages, setMessages] = useState<Array<MessageType>>([]);
 
   useEffect(() => {
-    const socket = io('http://localhost:3333/');
+    const socket = io(SERVER_URL);
 
     setCurrentSocket(socket);
 
@@ -27,9 +29,7 @@ export function Index() {
     socket.on(
       'message',
       async (fromServer: { id: string; sendDate: string }) => {
-        const response = await fetch(
-          `http://localhost:3333/message/${fromServer.id}`
-        );
+        const response = await fetch(`${SERVER_URL}/message/${fromServer.id}`);
 
         const msg: MessageType = await response.json();
 
