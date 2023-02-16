@@ -1,7 +1,8 @@
 import { io, Socket } from 'socket.io-client';
 import { useEffect, useState } from 'react';
 import { UserNameForm } from '../components/UserNameForm';
-import { ConnectedIcon, MessageBox } from '../components/ConnectedIcon';
+import { ConnectedIcon } from '../components/ConnectedIcon';
+import { MessageBox } from '../components/MessageBox';
 import { MessageType, Message } from '../components/Message';
 
 export function Index({ SERVER_URL }: { SERVER_URL: string }) {
