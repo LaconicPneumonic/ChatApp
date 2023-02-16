@@ -4,9 +4,7 @@ import { UserNameForm } from '../components/UserNameForm';
 import { ConnectedIcon, MessageBox } from '../components/ConnectedIcon';
 import { MessageType, Message } from '../components/Message';
 
-const SERVER_URL = process.env.SERVER_URL || 'http://localhost:3333/';
-
-export function Index() {
+export function Index({ SERVER_URL }: { SERVER_URL: string }) {
   const [currentSocket, setCurrentSocket] = useState<Socket>(null);
   const [isConnected, setIsConnected] = useState(false);
   const [userName, setUserName] = useState<string>(undefined);
@@ -100,6 +98,16 @@ export function Index() {
       </footer>
     </div>
   );
+}
+
+export async function getStaticProps() {
+  const SERVER_URL = process.env.SERVER_URL;
+
+  return {
+    props: {
+      SERVER_URL,
+    },
+  };
 }
 
 export default Index;
