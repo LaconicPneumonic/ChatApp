@@ -6,6 +6,10 @@ function CustomApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=0.90"
+        />
         <title>Welcome to chat-city!</title>
       </Head>
       <main className="app">
