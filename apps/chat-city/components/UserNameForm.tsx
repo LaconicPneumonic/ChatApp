@@ -25,17 +25,16 @@ export const UserNameForm = ({ userNameSet, setUserName }: Props) => {
   );
   if (!userNameSet) {
     return (
-      <form onSubmit={() => setUserName(name)}>
-        <label className="text-white flex  p-2 gap-2">
-          <span>{icon}</span>
-          <input
-            className="text-black"
-            type="text"
-            placeholder="FILL OUT USERNAME"
-            value={name || ''}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </label>
+      <form onSubmit={() => setUserName(name)} className="flex flex-row ">
+        <label className="text-white" />
+        <span>{icon}</span>
+        <input
+          className="text-black flex-grow mx-5"
+          type="text"
+          placeholder="FILL OUT USERNAME"
+          value={name || ''}
+          onChange={(e) => setName(e.target.value)}
+        />
       </form>
     );
   }
@@ -43,7 +42,7 @@ export const UserNameForm = ({ userNameSet, setUserName }: Props) => {
   return (
     <span>
       <button
-        className="text-black  bg-white rounded-md p-2 flex gap-2"
+        className="text-black bg-white rounded-md p-2 flex gap-2"
         onClick={() => setUserName(null)}
       >
         <span>{icon}</span>

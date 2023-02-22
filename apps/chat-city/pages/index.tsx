@@ -59,7 +59,7 @@ export function Index({ SERVER_URL }: { SERVER_URL: string }) {
   };
 
   return (
-    <div className="h-screen w-screen flex flex-col">
+    <div className="min-h-screen w-screen flex flex-col">
       <div className="h-full w-full flex flex-grow flex-row overflow-hidden">
         <aside className="w-0 flex-shrink bg-cyan-700 sm:w-auto">
           <div className="flex content-start justify-between divide-slate-700 border-solid sm:flex-col sm:divide-y-2">
@@ -68,8 +68,8 @@ export function Index({ SERVER_URL }: { SERVER_URL: string }) {
             </div>
           </div>
         </aside>
-        <main className="h-full w-full p-4 px-3 overflow-auto bg-cyan-100">
-          <div className="grid grid-cols-1 place-content-end gap-2">
+        <main className="min-h-full w-full p-4 px-3 overflow-auto bg-cyan-100">
+          <div className="h-full grid grid-cols-1 place-content-end gap-2">
             {messages.map((msg, i) => {
               return (
                 <Message
@@ -82,20 +82,22 @@ export function Index({ SERVER_URL }: { SERVER_URL: string }) {
           </div>
         </main>
       </div>
-      <footer className="mt-auto bg-slate-600 flex flex-row p-2 gap-4 place-items-center border-separate">
+      <footer className="bg-slate-600 flex flex-row p-2 gap-4 place-items-center border-separate">
         <span className="text-white">
           <ConnectedIcon connected={isConnected} />
         </span>
-        <span>
+        <div className="h-full">
           <UserNameForm
             userNameSet={userName != null}
             setUserName={setUserName}
           />
-        </span>
+        </div>
 
-        <span className="flex-grow">
-          <MessageBox disabled={userName == null} sendMessage={sendMessage} />
-        </span>
+        {userName != null && (
+          <div className="h-full flex-grow">
+            <MessageBox sendMessage={sendMessage} />
+          </div>
+        )}
       </footer>
     </div>
   );

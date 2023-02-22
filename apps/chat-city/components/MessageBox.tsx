@@ -1,10 +1,9 @@
 import { useState } from 'react';
 
 type Props = {
-  disabled: boolean;
   sendMessage: (msg: string) => void;
 };
-export const MessageBox = ({ disabled, sendMessage }: Props) => {
+export const MessageBox = ({ sendMessage }: Props) => {
   const [msg, setMsg] = useState<string>(null);
 
   const formHandler = (e) => {
@@ -14,13 +13,15 @@ export const MessageBox = ({ disabled, sendMessage }: Props) => {
   };
 
   return (
-    <form onSubmit={formHandler} className="w-100 flex p-2 gap-2">
+    <form
+      onSubmit={formHandler}
+      className="h-full flex flex-row items-center gap-2"
+    >
       <input
-        className="text-black flex-grow"
+        className="h-full text-black flex-grow rounded-md p-2"
         type="text"
         value={msg || ''}
         onChange={(e) => setMsg(e.target.value)}
-        disabled={disabled}
       />
       <svg
         xmlns="http://www.w3.org/2000/svg"
@@ -28,7 +29,7 @@ export const MessageBox = ({ disabled, sendMessage }: Props) => {
         viewBox="0 0 24 24"
         strokeWidth="1.5"
         stroke="currentColor"
-        className="w-6 h-6 stroke-white stroke-[2px]"
+        className=" max-h-6 stroke-white"
       >
         <path
           strokeLinecap="round"

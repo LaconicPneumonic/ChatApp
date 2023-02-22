@@ -4,7 +4,8 @@
   "license": "MIT",
   "scripts": {
     "build": "nx build --project chat-api",
-    "start": "node dist/apps/chat-api/main.js"
+    "start": "node dist/apps/chat-api/main.js",
+    "serveAll": "nx run-many --target=serve --all --parallel"
   },
   "private": true,
   "dependencies": {
