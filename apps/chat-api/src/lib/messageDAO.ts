@@ -57,7 +57,7 @@ export class MessageDAO implements MessageInterface {
     const ret = await this.messageCollection
       .find({
         sendDate: {
-          $gt: page != undefined ? page : new Date(0),
+          $lt: page != undefined ? page : new Date(),
         },
       })
       .sort({

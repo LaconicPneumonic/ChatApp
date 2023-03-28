@@ -29,7 +29,7 @@ export const MessageBox = ({ sendMessage }: Props) => {
         viewBox="0 0 24 24"
         strokeWidth="1.5"
         stroke="currentColor"
-        className=" max-h-6 stroke-white"
+        className="w-0 sm:w-auto max-h-6 stroke-white"
       >
         <path
           strokeLinecap="round"
