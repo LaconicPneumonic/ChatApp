@@ -20,9 +20,18 @@ const getMessage = async (
   id: string,
   SERVER_URL: string
 ): Promise<MessageType> => {
+  const rawMsg = localStorage.getItem(id);
+
+  if (rawMsg) {
+    return JSON.parse(rawMsg);
+  }
   const response = await fetch(`${SERVER_URL}/message/${id}`);
 
-  return await response.json();
+  const ret = await response.json();
+
+  localStorage.setItem(id, JSON.stringify(ret));
+
+  return ret;
 };
 
 export function Index({ SERVER_URL }: { SERVER_URL: string }) {
