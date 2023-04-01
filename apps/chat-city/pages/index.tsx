@@ -1,38 +1,10 @@
-import { io, Socket } from 'socket.io-client';
 import { useEffect, useRef, useState } from 'react';
-import { UserNameForm } from '../components/UserNameForm';
+import { io, Socket } from 'socket.io-client';
 import { ConnectedIcon } from '../components/ConnectedIcon';
+import { Message, MessageType } from '../components/Message';
 import { MessageBox } from '../components/MessageBox';
-import { MessageType, Message } from '../components/Message';
-
-const getMessagesBefore = async (
-  date: Date,
-  SERVER_URL: string
-): Promise<Array<{ id: string; sendDate: string }>> => {
-  const response = await fetch(
-    `${SERVER_URL}/messages/${encodeURI(date.toISOString())}`
-  );
-
-  return await response.json();
-};
-
-const getMessage = async (
-  id: string,
-  SERVER_URL: string
-): Promise<MessageType> => {
-  const rawMsg = localStorage.getItem(id);
-
-  if (rawMsg) {
-    return JSON.parse(rawMsg);
-  }
-  const response = await fetch(`${SERVER_URL}/message/${id}`);
-
-  const ret = await response.json();
-
-  localStorage.setItem(id, JSON.stringify(ret));
-
-  return ret;
-};
+import { UserNameForm } from '../components/UserNameForm';
+import * as client from '../utils/messagesClient';
 
 export function Index({ SERVER_URL }: { SERVER_URL: string }) {
   const [currentSocket, setCurrentSocket] = useState<Socket>(null);
@@ -52,10 +24,10 @@ export function Index({ SERVER_URL }: { SERVER_URL: string }) {
         console.log('fetching more messages', oldestDate);
         setLoading(true);
 
-        getMessagesBefore(oldestDate, SERVER_URL).then(async (msgs) => {
+        client.getMessagesBefore(oldestDate, SERVER_URL).then(async (msgs) => {
           const newMessages = await Promise.all(
             msgs.map(async (msg) => {
-              const m = await getMessage(msg.id, SERVER_URL);
+              const m = await client.getMessage(msg.id, SERVER_URL);
               return { id: msg.id, ...m };
             })
           );
@@ -105,7 +77,10 @@ export function Index({ SERVER_URL }: { SERVER_URL: string }) {
     socket.on(
       'message',
       async (fromServer: { id: string; sendDate: string }) => {
-        const msg: MessageType = await getMessage(fromServer.id, SERVER_URL);
+        const msg: MessageType = await client.getMessage(
+          fromServer.id,
+          SERVER_URL
+        );
 
         const newDate = new Date(msg.sendDate);
         setOldestDate(newDate < oldestDate ? newDate : oldestDate);
