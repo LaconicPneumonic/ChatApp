@@ -28,6 +28,14 @@ app.get('/message/:messageId', async (req, res) => {
   res.send(result);
 });
 
+app.get('/messages/:date', async (req, res) => {
+  const parsedDate = new Date(decodeURI(req.params.date));
+
+  const oldMessages = await client.getMessagesBefore(parsedDate);
+
+  return res.status(200).json(oldMessages);
+});
+
 const port = process.env.PORT || 3333;
 const server = app.listen(port, () => {
   console.log(`Listening at http://localhost:${port}`);
@@ -41,7 +49,7 @@ const io = new Server(server, {
 });
 
 io.on('connection', async (socket) => {
-  const newMessages = await client.getMessagesBefore();
+  const newMessages = await client.getMessagesBefore(null, 20);
 
   for (const message of newMessages) {
     socket.emit('message', message);
